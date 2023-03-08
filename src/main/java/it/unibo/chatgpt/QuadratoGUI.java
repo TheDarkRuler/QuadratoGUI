@@ -7,6 +7,8 @@ import javax.swing.*;
 import javafx.geometry.Point2D;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.Toolkit;
+
 
 
 public class QuadratoGUI extends JPanel {
@@ -27,8 +29,10 @@ public class QuadratoGUI extends JPanel {
     protected RectangleHB playerHitBox;
     protected static CircleHB hammerHitBox;
     protected static RectangleHB moleHitBox;
+    private MoleMovement mole;
 
     public QuadratoGUI() {
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.mouseInputs = new MouseListenerImpl();
         this.keyboarListener = new KeyListenerImpl();
         QuadratoGUI.cursorOnScreen = false;
@@ -43,6 +47,7 @@ public class QuadratoGUI extends JPanel {
         addKeyListener(keyboarListener);
         addMouseListener(mouseInputs);
         addMouseMotionListener(mouseInputs);
+        this.mole = new MoleMovement(dim.height, dim.width);
         startTimer();
     }
 
@@ -56,6 +61,10 @@ public class QuadratoGUI extends JPanel {
                 mouseInputs.setHammerRange();
                 x += ((KeyListenerImpl) keyboarListener).getMoveX();
                 y += ((KeyListenerImpl) keyboarListener).getMoveY();
+                if (((KeyListenerImpl) keyboarListener).isSpacePressed()) {
+                    mole.moleMovement();
+                    ((KeyListenerImpl) keyboarListener).setSpacePressed();
+                }
                 repaint();
             }
         });
@@ -67,6 +76,7 @@ public class QuadratoGUI extends JPanel {
 
         g.setColor(Color.BLACK);
 
+        mole.drawFence(g);
         playerHitBox.setCenter(new Point2D(x , y));
         moleHitBox.drawHitBox(g);
         playerHitBox.drawHitBox(g);

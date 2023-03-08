@@ -7,6 +7,7 @@ public class KeyListenerImpl implements KeyListener {
     private static final int MOVE_SPEED = 5;
     
     protected static int moveX, moveY;
+    private boolean spacePressed = false;
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -28,6 +29,9 @@ public class KeyListenerImpl implements KeyListener {
                 case KeyEvent.VK_RIGHT:
                 case KeyEvent.VK_D:
                     moveX = MOVE_SPEED;
+                    break;
+                case KeyEvent.VK_SPACE:
+                    spacePressed = true;
                     break;
             }
 
@@ -66,5 +70,12 @@ public class KeyListenerImpl implements KeyListener {
     public int getMoveY() {
         return KeyListenerImpl.moveY;
     }
+
+    public boolean isSpacePressed() {
+        return this.spacePressed;
+    }
     
+    public void setSpacePressed() {
+        this.spacePressed = false;
+    }
 }
