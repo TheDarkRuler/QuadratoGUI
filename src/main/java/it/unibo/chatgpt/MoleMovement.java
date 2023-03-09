@@ -29,17 +29,13 @@ public class MoleMovement {
 
         molePosition = moleSpawn();
     }
-
-    public void drawFence(Graphics g) {
+    
+    public void drawMole(Graphics g) {
         g.drawOval((int) molePosition.getX() - MOLE_SIZE / 2,(int) molePosition.getY() - MOLE_SIZE / 2, MOLE_SIZE, MOLE_SIZE);
-        g.drawRect(FENCE_BORDER / 2, FENCE_BORDER / 2, widthFence, heightFence);
-        g.drawLine((FENCE_BORDER / 2) + (widthFence / 2), FENCE_BORDER / 2, (FENCE_BORDER / 2) + (widthFence / 2), heightFence + (FENCE_BORDER / 2));
-        g.drawLine((FENCE_BORDER / 2), (FENCE_BORDER / 2) + (heightFence / 2), (FENCE_BORDER / 2) + widthFence, (FENCE_BORDER / 2) + (heightFence/2));
     }
 
     public Point2D moleSpawn() {
         moleTimeSpawns++;
-        System.out.println("caisnfi a");
         switch (new Random().nextInt(4)) {
             case 0:
                 moleLocation = 0;
@@ -70,7 +66,6 @@ public class MoleMovement {
     public Point2D moleMovement() {
         if(moleTimeSpawns > 3) {
             moleTimeSpawns = 0;
-            return moleSpawn();
         }
         int newPos = moleLocation;
         while (newPos == moleLocation){

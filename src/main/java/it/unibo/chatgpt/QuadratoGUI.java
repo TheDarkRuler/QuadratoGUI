@@ -8,8 +8,7 @@ import javafx.geometry.Point2D;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.Toolkit;
-
-
+import java.util.Random;
 
 public class QuadratoGUI extends JPanel {
 
@@ -19,6 +18,8 @@ public class QuadratoGUI extends JPanel {
     private static final int MOLE_HITBOX = 40;
     private static final int MOLE_POSITION = 230;
     
+    private int moleMinDelay;
+    private int moleMaxDelay;
     private int x, y;
     private Point2D center;
     private Point2D temp;
@@ -29,10 +30,14 @@ public class QuadratoGUI extends JPanel {
     protected HitBox playerHitBox;
     protected static HitBox hammerHitBox;
     protected static HitBox moleHitBox;
-    private MoleMovement mole;
+    private MolesManager molesManage;
+    private Dimension dim;
 
     public QuadratoGUI() {
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.moleMinDelay = 3000;
+        this.moleMaxDelay = 5500;
+        dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.molesManage = new MolesManager(this, dim);
         this.mouseInputs = new MouseListenerImpl();
         this.keyboarListener = new KeyListenerImpl();
         QuadratoGUI.cursorOnScreen = false;
@@ -47,8 +52,8 @@ public class QuadratoGUI extends JPanel {
         addKeyListener(keyboarListener);
         addMouseListener(mouseInputs);
         addMouseMotionListener(mouseInputs);
-        this.mole = new MoleMovement(dim.height, dim.width);
         startTimer();
+        startMoleTimer();
     }
 
 
@@ -62,7 +67,7 @@ public class QuadratoGUI extends JPanel {
                 x += ((KeyListenerImpl) keyboarListener).getMoveX();
                 y += ((KeyListenerImpl) keyboarListener).getMoveY();
                 if (((KeyListenerImpl) keyboarListener).isSpacePressed()) {
-                    mole.moleMovement();
+                    molesManage.moleMoves();
                     ((KeyListenerImpl) keyboarListener).setSpacePressed();
                 }
                 repaint();
@@ -70,13 +75,26 @@ public class QuadratoGUI extends JPanel {
         });
         timer.start(); 
     }
+
+    private void startMoleTimer() {
+        Timer moleTimer = new Timer(moleMinDelay + (new Random().nextInt(moleMaxDelay)), new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                molesManage.addMole();
+            }
+        });
+        moleTimer.start();
+    }
     
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         g.setColor(Color.BLACK);
 
-        mole.drawFence(g);
+        molesManage.drawMoles(g);
+
+        molesManage.drawFence(g);
+
         playerHitBox.setCenter(new Point2D(x , y));
         moleHitBox.drawHitBox(g);
         playerHitBox.drawHitBox(g);
