@@ -102,4 +102,9 @@ public class CircleHB implements HitBox {
             return this.center.getY() - Math.max((rectangle.getEdge().getY() + rectangle.getHeight()), rectangle.getEdge().getY());
         }
     }
+
+    @Override
+    public boolean isColliding(HitBox shape) {
+        return shape.isColliding(this);
+    }
 }

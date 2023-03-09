@@ -26,9 +26,9 @@ public class QuadratoGUI extends JPanel {
     private MouseListenerImpl mouseInputs;
     private KeyListener keyboarListener;
     private static boolean cursorOnScreen;
-    protected RectangleHB playerHitBox;
-    protected static CircleHB hammerHitBox;
-    protected static RectangleHB moleHitBox;
+    protected HitBox playerHitBox;
+    protected static HitBox hammerHitBox;
+    protected static HitBox moleHitBox;
     private MoleMovement mole;
 
     public QuadratoGUI() {

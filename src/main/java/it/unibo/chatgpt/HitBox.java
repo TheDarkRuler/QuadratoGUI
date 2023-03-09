@@ -6,6 +6,7 @@ package it.unibo.chatgpt;
 //import it.unibo.chatgpt.CircleHB;
 //import it.unibo.chatgpt.RectangleHB;
 import javafx.geometry.Point2D;
+import java.awt.Graphics;
 
 /**
  * interface for the hitboxes shapes.
@@ -37,5 +38,9 @@ public interface HitBox {
      * @return if the two shapes are colliding
      */
     boolean isColliding(RectangleHB rectangle);
+
+    boolean isColliding(HitBox shape);
+
+    void drawHitBox(Graphics g);
 
 }
