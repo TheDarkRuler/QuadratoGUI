@@ -31,13 +31,13 @@ public class QuadratoGUI extends JPanel {
     protected static HitBox hammerHitBox;
     protected static HitBox moleHitBox;
     private MolesManager molesManage;
-    private Dimension dim;
+    private Dimension frameSize;
 
     public QuadratoGUI() {
         this.moleMinDelay = 3000;
         this.moleMaxDelay = 5500;
-        dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.molesManage = new MolesManager(this, dim);
+        frameSize = Toolkit.getDefaultToolkit().getScreenSize();
+        this.molesManage = new MolesManager(this, frameSize);
         this.mouseInputs = new MouseListenerImpl();
         this.keyboarListener = new KeyListenerImpl();
         QuadratoGUI.cursorOnScreen = false;
@@ -46,7 +46,7 @@ public class QuadratoGUI extends JPanel {
         this.playerHitBox = new RectangleHB(PLAYER_DIM, PLAYER_DIM, new Point2D(x, y));
         QuadratoGUI.moleHitBox = new RectangleHB(MOLE_HITBOX, MOLE_HITBOX, new Point2D(MOLE_POSITION , MOLE_POSITION ));
 
-        setPreferredSize(new Dimension(500, 500));
+        setPreferredSize(new Dimension(frameSize.width, frameSize.height));
         setBackground(Color.WHITE);
         setFocusable(true);
         addKeyListener(keyboarListener);
@@ -66,10 +66,6 @@ public class QuadratoGUI extends JPanel {
                 mouseInputs.setHammerRange();
                 x += ((KeyListenerImpl) keyboarListener).getMoveX();
                 y += ((KeyListenerImpl) keyboarListener).getMoveY();
-                if (((KeyListenerImpl) keyboarListener).isSpacePressed()) {
-                    molesManage.moleMoves();
-                    ((KeyListenerImpl) keyboarListener).setSpacePressed();
-                }
                 repaint();
             }
         });
@@ -77,7 +73,7 @@ public class QuadratoGUI extends JPanel {
     }
 
     private void startMoleTimer() {
-        Timer moleTimer = new Timer(moleMinDelay + (new Random().nextInt(moleMaxDelay)), new ActionListener() {
+        Timer moleTimer = new Timer(moleMinDelay + (new Random().nextInt(moleMaxDelay - moleMinDelay)), new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 molesManage.addMole();
